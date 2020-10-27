@@ -4,7 +4,7 @@ Basic electrical circuit calculator. That's how I define a recently written Pyth
 
 **Features:**
 
-1. Initiallize circuits passing its branches as atributtes. The circuit is modelled throught an **internal multigraph**: branch components as the corresponding edge atributtes.
+1. Initiallize circuits by passing its branches as atributtes. The circuit is modelled throught an **internal multigraph**: branch components as the corresponding edge atributtes.
 
 2. **Automatic Kirchhoff update**, if possible, to determine the unknown variable for each branch: given a generator and a resistance, computes that branch intensity (if voltage source) or the potential difference of the generator (if current source). Also can determine the branch resistance if having a voltage AND a current source, but only if the Kirchhoff laws allow it: doesn't solve unstable circuits. 
 
