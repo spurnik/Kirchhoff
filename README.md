@@ -22,7 +22,7 @@ The class is under-development-when-I-have-time, so I'm still thinking on how to
 
 I've provided three circuits as examples, all resolved using the same procedure.
 
-**DC NUMERIC KIRCHHOFF**
+**1. DC NUMERIC KIRCHHOFF**
 
 Simple Kirchhoff circuit, with only three voltage sources and three resistances. The normal solving procedure involves checking for all nodes, branches and meshes of the circuit, and then build a linear system from using Kirchhoff Laws.
 
@@ -39,21 +39,14 @@ example1.add_branch((1, 2), R = 2, V = 5)
 
 Then, we just have to plot the circuit, by using the default `print()` or the convenient view:
 
-`print(example1)`
+```
+print(example1)
+```
 
-1					                              2
-|					                              |
-|					                              |
-+--------[3 kO]---(10 V)---\1 mA\-------+
-|					                              |
-|					                              |
-+------------[10 kO]---(7 V)------------+
-|					                              |
-|					                              |
-+--------[2 kO]---(5 V)---\-1 mA\-------+
+![](./images/out_1.png)
 
 
-**DC SYMBOLIC KIRCHHOFF**
+**2. DC SYMBOLIC KIRCHHOFF**
 
 Another simple DC Kirchhoff circuit, but this time with symbolic values. Note that we have a current generator, though the commands are the same:
 
@@ -67,24 +60,15 @@ example2.add_branch((1, 2), R = 'R', V = 0)
 print(example2)
 ```
 
-1					                              2
-|					                              |
-|					                              |
-+[R kO]---(V1 V)---\(-I2*R + V1)/(2*R) mA\+
-|					                              |
-|					                              |
-+-[R kO]---\I2 mA\---(3*I2*R/2 + V1/2 V)+
-|					                              |
-|					                              |
-+----[R kO]---\-(I2*R + V1)/(2*R) mA\---+
+![](./images/out_2.png)
 
-A few remarks:
+__A few remarks__:
 
-1) The symbolic operators or variables have to be passed as strings. Then, the SimPy module applies a symbolic transformation over them.
-2) The voltage of the second branch is the unknown, so we have to pass the resistance and intensity values.
-3) The third branch has to assure `V = 0`. The class doesn't assume a default value for any variable, so needs exactly two input components.
+- The symbolic operators or variables have to be passed as strings. Then, the SimPy module applies a symbolic transformation over them.
+- The voltage of the second branch is the unknown, so we have to pass the resistance and intensity values.
+- The third branch has to assure `V = 0`. The class doesn't assume a default value for any variable, so needs exactly two input components.
 
-**DC EXTENDED KIRCHHOFF**
+**3. DC EXTENDED KIRCHHOFF**
 
 Finally, let's solve a more complicated one:
 
@@ -107,23 +91,11 @@ example3.add_branch(('A', 'B'), R = '7 * R', V = 'V6 - V5')
 
 As the circuit view used in the two previous examples is too complex for complicated circuits, we will use the branch view, witch offers a more readable view of branches connections:
 
-`print(example3.branches_view())`
+```
+print(example3.branches_view())
+```
 
-('A', 'B', 0): (A)-------[2*R kO]--------(V2 V)--------\(21*V1 + 143*V2 - 42*V3 - 56*V4 + 24*V5 - 24*V6)/(454*R) mA\-------(B)
-
-('A', 'B', 1): (A)-------[7*R kO]--------(-V5 + V6 V)--------\(3*V1 - 12*V2 - 6*V3 - 8*V4 - 29*V5 + 29*V6)/(227*R) mA\-------(B)
-
-('A', 'C', 0): (A)-------[2*R kO]--------\(-41*V1 - 63*V2 + 82*V3 - 42*V4 + 18*V5 - 18*V6)/(454*R) mA\-------(C)
-
-('A', 'D', 0): (A)-------[2*R kO]--------(V4 V)--------\(7*V1 - 28*V2 - 14*V3 + 57*V4 + 8*V5 - 8*V6)/(227*R) mA\-------(D)
-
-('B', 'C', 0): (B)-------[R kO]--------(-V3 V)--------\(-62*V1 + 21*V2 - 103*V3 + 14*V4 - 6*V5 + 6*V6)/(227*R) mA\-------(C)
-
-('B', 'C', 1): (B)-------[2*R kO]--------(V1 V)--------\(165*V1 + 21*V2 + 124*V3 + 14*V4 - 6*V5 + 6*V6)/(454*R) mA\-------(C)
-
-('B', 'D', 0): (B)-------[2*R kO]--------\(-7*V1 + 28*V2 + 14*V3 - 57*V4 - 8*V5 + 8*V6)/(454*R) mA\-------(D)
-
-('B', 'D', 1): (B)-------[2*R kO]--------\(-7*V1 + 28*V2 + 14*V3 - 57*V4 - 8*V5 + 8*V6)/(454*R) mA\-------(D)
+![](./images/out_3.png)
 
 ### Comments:
 
