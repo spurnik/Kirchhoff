@@ -2,7 +2,7 @@
 
 Basic electrical circuit simulator. That's how I define a recently written Python Class which is capable of solving linear circuits (V, I, R variables), by using the well-knowned Kirchhoff Laws.
 
-#### Features:
+### Features:
 
 1. Initiallize circuits by passing its branches as atributtes. The circuit is modelled throught an **internal multigraph**: branch components as the corresponding edge atributtes.
 
@@ -14,11 +14,11 @@ Basic electrical circuit simulator. That's how I define a recently written Pytho
 
 5. And the better one... have **symbolic support**! Uses SimPy library for all computations, so can actually perform symbolic operations. That means, we can pass branch's values as knowed variables like 'V1' or 'R', so the targetted variable will get also a symbolic expression as result. That's so useful for college tasks, or general circuits where we don't know some of the branch's actual values.
 
-#### Limitations:
+### Limitations:
 
 The class is under-development-when-I-have-time, so I'm still thinking on how to improve it. For the moment, circuit branches only supports the three basic linear components: resistances, source generators and current generators, in DC.
 
-#### Examples:
+### Examples:
 
 I've provided three circuits as examples, all resolved using the same procedure.
 
@@ -30,16 +30,18 @@ Simple Kirchhoff circuit, with only three voltage sources and three resistances.
 
 With `Circuit` class, you only have to specify the branches of the circuit by passing its components:
 
-`example1 = Circuit()
+```
+example1 = Circuit()
 example1.add_branch((1, 2), R = 3, V = 10)
 example1.add_branch((1, 2), R = 10, V = 7)
-example1.add_branch((1, 2), R = 2, V = 5)`
+example1.add_branch((1, 2), R = 2, V = 5)
+```
 
 Then, we just have to plot the circuit, by using the default `print()` or the convenient view:
 
 `print(example1)`
 
-`1					                              2
+1					                              2
 |					                              |
 |					                              |
 +--------[3 kO]---(10 V)---\1 mA\-------+
@@ -48,8 +50,7 @@ Then, we just have to plot the circuit, by using the default `print()` or the co
 +------------[10 kO]---(7 V)------------+
 |					                              |
 |					                              |
-+--------[2 kO]---(5 V)---\-1 mA\-------+`
-
++--------[2 kO]---(5 V)---\-1 mA\-------+
 
 
 **DC SYMBOLIC KIRCHHOFF**
@@ -58,13 +59,15 @@ Another simple DC Kirchhoff circuit, but this time with symbolic values. Note th
 
 ![](./images/Electro_1.png)
 
-`example2 = Circuit()
+```
+example2 = Circuit()
 example2.add_branch((1, 2), R = 'R', V = 'V1')
 example2.add_branch((1, 2), R = 'R', I = 'I2')
 example2.add_branch((1, 2), R = 'R', V = 0)
-print(example2)`
+print(example2)
+```
 
-`1					                              2
+1					                              2
 |					                              |
 |					                              |
 +[R kO]---(V1 V)---\(-I2*R + V1)/(2*R) mA\+
@@ -73,7 +76,7 @@ print(example2)`
 +-[R kO]---\I2 mA\---(3*I2*R/2 + V1/2 V)+
 |					                              |
 |					                              |
-+----[R kO]---\-(I2*R + V1)/(2*R) mA\---+`
++----[R kO]---\-(I2*R + V1)/(2*R) mA\---+
 
 A few remarks:
 
@@ -90,7 +93,8 @@ Finally, let's solve a more complicated one:
 Here, I've previously marked circuit nodes with single characters, from 'A' to 'D'. It's useful to use numbers or characters for nodes.
 Furthermore, when adding new branches, the connected nodes have to satisfy the order '<', because of a convention.
 
-`example3 = ElectricalCircuit()
+```
+example3 = ElectricalCircuit()
 example3.add_branch(('A', 'B'), R = '2 * R', V = 'V2')
 example3.add_branch(('A', 'C'), R = '2 * R', V = 0)
 example3.add_branch(('A', 'D'), R = '2 * R', V = 'V4')
@@ -98,13 +102,14 @@ example3.add_branch(('B', 'C'), R = 'R', V = '- V3')
 example3.add_branch(('B', 'C'), R = '2 * R', V = 'V1')
 example3.add_branch(('B', 'D'), R = '2 * R', V = 0)
 example3.add_branch(('B', 'D'), R = '2 * R', V = 0)
-example3.add_branch(('A', 'B'), R = '7 * R', V = 'V6 - V5')`
+example3.add_branch(('A', 'B'), R = '7 * R', V = 'V6 - V5')
+```
 
 As the circuit view used in the two previous examples is too complex for complicated circuits, we will use the branch view, witch offers a more readable view of branches connections:
 
 `print(example3.branches_view())`
 
-`('A', 'B', 0): (A)-------[2*R kO]--------(V2 V)--------\(21*V1 + 143*V2 - 42*V3 - 56*V4 + 24*V5 - 24*V6)/(454*R) mA\-------(B)
+('A', 'B', 0): (A)-------[2*R kO]--------(V2 V)--------\(21*V1 + 143*V2 - 42*V3 - 56*V4 + 24*V5 - 24*V6)/(454*R) mA\-------(B)
 
 ('A', 'B', 1): (A)-------[7*R kO]--------(-V5 + V6 V)--------\(3*V1 - 12*V2 - 6*V3 - 8*V4 - 29*V5 + 29*V6)/(227*R) mA\-------(B)
 
@@ -118,8 +123,8 @@ As the circuit view used in the two previous examples is too complex for complic
 
 ('B', 'D', 0): (B)-------[2*R kO]--------\(-7*V1 + 28*V2 + 14*V3 - 57*V4 - 8*V5 + 8*V6)/(454*R) mA\-------(D)
 
-('B', 'D', 1): (B)-------[2*R kO]--------\(-7*V1 + 28*V2 + 14*V3 - 57*V4 - 8*V5 + 8*V6)/(454*R) mA\-------(D)`
+('B', 'D', 1): (B)-------[2*R kO]--------\(-7*V1 + 28*V2 + 14*V3 - 57*V4 - 8*V5 + 8*V6)/(454*R) mA\-------(D)
 
-#### Comments:
+### Comments:
 
 Of course, any comment, advise or support is highly appreciated.
